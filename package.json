@@ -4,8 +4,7 @@
   "description": "Een bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luke O.",
   "license": "ISC",
