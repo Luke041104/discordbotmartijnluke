@@ -1,7 +1,32 @@
 const discord = require("discord.js");
 const botConfig = require("./botconfig.json");
 
+const fs = require("fs");
+
 const bot = new discord.Client();
+bot.commands = new discord.Collection();
+
+fs.readdir("./commands/", (err, files) => {
+
+    if (err) console.log(err);
+  
+    var jsFiles = files.filter(f => f.split(".").pop() === "js");
+  
+    if (jsFiles.length <= 0) {
+      console.log("Kon geen files vinden");
+      return;
+    }
+  
+    jsFiles.forEach((f, i) => {
+  
+      var fileGet = require(`./commands/${f}`);
+      console.log(`De file ${f} is geladen`)
+  
+      bot.commands.set(fileGet.help.name, fileGet);
+    })
+  
+  
+  });
 
 
 bot.on("ready", async () => {
@@ -27,7 +52,12 @@ bot.on("message", async message => {
 
     var arguments = messageArray.slice(1);
 
-    if(command === `${prefix}youtube`){
+    var commands = bot.commands.get(command.slice(prefix.length));
+
+    if(commands) commands.run(bot, message, arguments);
+  
+
+   /* if(command === `${prefix}youtube`){
 
 
         var botEmbed = new discord.RichEmbed()
@@ -37,7 +67,7 @@ bot.on("message", async message => {
            .addField("GamenMetLuke: https://www.youtube.com/channel/UCx7jPblI0AW_9yj2Vz--6DQ ");
           return message.channel.send(botEmbed);
 
-    }
+    } */
 
     if(command === `${prefix}test`){
 
